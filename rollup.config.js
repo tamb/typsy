@@ -6,9 +6,9 @@ export default [
   {
     input: "src/index.js",
     output: {
-      file: "dist/domponent.production.min.js",
+      file: "dist/index.js",
       format: "umd",
-      name: "Domponent"
+      name: "typsy"
     },
     plugins: [
       terser({
@@ -27,17 +27,17 @@ export default [
   {
     input: "src/index.js",
     output: {
-      file: "dist/domponent.development.js",
+      file: "dist/index.development.js",
       format: "umd",
-      name: "Domponent"
+      name: "typsy"
     }
   },
   {
     input: "./src/index.js",
     output: {
-      file: "dist/domponent.es5.production.min.js",
+      file: "dist/typsy.es5.js",
       format: "umd",
-      name: "Domponent"
+      name: "typsy"
     },
     plugins: [
       babel({
@@ -54,16 +54,15 @@ export default [
   {
     input: "./src/index.js",
     output: {
-      file: "dist/domponent.es5.development.min.js",
+      file: "dist/typsy.es5.development.js",
       format: "umd",
-      name: "Domponent"
+      name: "typsy"
     },
     plugins: [
       babel({
         exclude: "node_modules/**"
       }),
       terser({
-        compress: true,
         ecma: 5
       })
     ]

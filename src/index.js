@@ -1,10 +1,12 @@
+import _mixin from "./mixin";
+import _typeCheck from "./typecheck";
 
-  const typsy = {
-    mixin,    // mixin a bunch of objects and functions
-    extend,   // extend prototype of an object
-    static    // make a method static and all its parts persistant (closure)
-    private,  // make a variable private
-    typeCheck, // check the type of objects by chaining typeCheck(1).isNumber() // true
-  };
+export const mixin = _mixin;
+export const typeCheck = _typeCheck;
 
-  export default typsy;
+const typsy = {
+  mixin, // mixin a bunch of objects and functions
+  typeCheck // check the type of objects by chaining typeCheck(1).isNumber() // true
+};
+
+export default typsy;
