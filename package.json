@@ -1,0 +1,44 @@
+{
+  "name": "typsy",
+  "version": "0.0.0",
+  "description": "",
+  "keywords": [
+
+  ],
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "homepage": "",
+  "main": "dist/index",
+  "unpkg": "dist/index",
+  "scripts": {
+    "test": "jest",
+    "build": "npm test && rollup -c rollup.config.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "tamb",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/preset-env": "^7.5.5",
+    "gh-pages": "^2.1.1",
+    "husky": "^3.0.5",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.18.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-strip-code": "^0.2.7",
+    "rollup-plugin-terser": "^5.1.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
