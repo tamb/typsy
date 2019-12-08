@@ -1,2 +1,16 @@
 # typsy
-Simple Utilities for Robust JavaScript
+
+Simple, chainable type-checking for JavaScript
+
+## install
+
+```js
+npm install --save typsy
+```
+
+## import
+
+```js
+// myfile.js
+import { typeCheck } from "typsy";
+```
