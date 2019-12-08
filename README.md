@@ -23,6 +23,8 @@ const x = "This is a string";
 typeCheck(x).isString().yields(); // true
 
 typeCheck(x).isInteger().yields(); // false
+
+typeCheck(x).isString().or().isInteger().yields(); // true
 ```
 
 ## the almighty `yields`
