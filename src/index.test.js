@@ -301,4 +301,41 @@ describe("typeCheck", () => {
         .yields()
     ).toBe(false);
   });
+
+  test("unless works", () => {
+    const name = "foobar";
+    const number = 234;
+
+    expect(
+      typeCheck(name)
+        .unless()
+        .isString()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(name)
+        .unless()
+        .isInteger()
+        .yields()
+    ).toBe(true);
+
+    expect(
+      typeCheck(number)
+        .unless()
+        .isString()
+        .yields()
+    ).toBe(true);
+    expect(
+      typeCheck(number)
+        .unless()
+        .isInteger()
+        .yields()
+    ).toBe(false);
+  });
+
+  // test chaining with or
+
+  // test chaining with and
+
+  // test chaining with unless
 });
