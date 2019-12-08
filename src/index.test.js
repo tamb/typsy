@@ -331,11 +331,104 @@ describe("typeCheck", () => {
         .isInteger()
         .yields()
     ).toBe(false);
+
+    expect(
+      typeCheck(number)
+        .unless()
+        .isInteger().isUnless
+    ).toBe(true);
   });
 
-  // test chaining with or
+  test("or works", () => {
+    expect(
+      typeCheck(12)
+        .isString()
+        .or()
+        .isInteger()
+        .yields()
+    ).toBe(true);
+    expect(
+      typeCheck(12)
+        .isString()
+        .or()
+        .isFloat()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(12)
+        .isString()
+        .or()
+        .isInteger()
+        .or()
+        .isEmptyArray()
+        .yields()
+    ).toBe(true);
+    expect(
+      typeCheck(12)
+        .isString()
+        .or()
+        .isFloat()
+        .or()
+        .isDate()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(12)
+        .isString()
+        .or()
+        .isFloat().isOr
+    ).toBe(true);
+  });
 
-  // test chaining with and
+  test("and works", () => {
+    expect(
+      typeCheck(new Array())
+        .isArray()
+        .and()
+        .isEmptyArray()
+        .yields()
+    ).toBe(true);
+    expect(
+      typeCheck(12)
+        .isString()
+        .and()
+        .isInteger()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(12)
+        .isString()
+        .and()
+        .isFloat()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(12)
+        .isString()
+        .and()
+        .isInteger()
+        .and()
+        .isEmptyArray()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(12)
+        .isString()
+        .and()
+        .isFloat()
+        .and()
+        .isDate()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(12)
+        .isString()
+        .and()
+        .isFloat().isAnd
+    ).toBe(true);
+  });
 
-  // test chaining with unless
+  test("item field returns variable value", () => {
+    expect(typeCheck(15).item).toBe(15);
+  });
 });
