@@ -1,4 +1,4 @@
-import typeCheck from "./typecheck";
+import { typeCheck } from "./index";
 
 describe("typeCheck", () => {
   test("Integer test to return true for Negative and Positive Integer.  String is not an Int", () => {
@@ -285,5 +285,20 @@ describe("typeCheck", () => {
         .isFunction()
         .yields()
     ).toBe(true);
+  });
+
+  test("date is date", () => {
+    const x = new Date();
+    const dateString = "12-12-2099";
+    expect(
+      typeCheck(x)
+        .isDate()
+        .yields()
+    ).toBe(true);
+    expect(
+      typeCheck(dateString)
+        .isDate()
+        .yields()
+    ).toBe(false);
   });
 });
