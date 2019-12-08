@@ -14,3 +14,16 @@ npm install --save typsy
 // myfile.js
 import { typeCheck } from "typsy";
 ```
+
+## use
+
+```js
+const x = "This is a string";
+
+typeCheck(x)
+  .isString()
+  .yields(); // true
+typeCheck(x)
+  .isInteger()
+  .yields(); // false
+```
