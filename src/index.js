@@ -64,10 +64,6 @@ export function typeCheck(item) {
       const bool = typeof item === "number" && item % 1 !== 0;
       return handleBool(mod, bool);
     },
-    isNegativeFloat: () => {
-      const bool = typeof item === "number" && item % 1 !== 0 && item < 0;
-      return handleBool(mod, bool);
-    },
     isObject: () => {
       const bool =
         typeof item === "object" && item !== null && !Array.isArray(item);

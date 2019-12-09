@@ -40,7 +40,6 @@ isEmptyString();
 isAllWhiteSpace();
 isBoolean();
 isFloat();
-isNegativeFloat();
 isObject();
 isNull();
 isUndefined();
