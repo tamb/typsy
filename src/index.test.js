@@ -1,6 +1,6 @@
 import { typeCheck } from "./index";
 
-describe("typeCheck", () => {
+describe("typeCheck basics", () => {
   test("Integer test to return true for Negative and Positive Integer.  String is not an Int", () => {
     expect(
       typeCheck(12)
@@ -430,5 +430,204 @@ describe("typeCheck", () => {
 
   test("item field returns variable value", () => {
     expect(typeCheck(15).item).toBe(15);
+  });
+
+  // test("can add custom check", ()=>{
+  //   const _typeCheck = typeCheck().add("isNegative", toCheck => toCheck < 0);
+  //   console.log(_typeCheck());
+  //   expect(_typeCheck(12).isNegative().yields()).toBe(false);
+  //   expect(_typeCheck(-12).isNegative().yields()).toBe(true);
+  // });
+
+  // test("can chain custom check", ()=>{
+
+  // });
+});
+
+describe("isSet", () => {
+  test("Set is a set", () => {
+    const x = new Set();
+    expect(
+      typeCheck(x)
+        .isSet()
+        .yields()
+    ).toBe(true);
+  });
+
+  test("Fake Set function yields false", () => {
+    function Set() {
+      this.constructor = {
+        name: "Set"
+      };
+      return this;
+    }
+
+    expect(
+      typeCheck(new Set())
+        .isSet()
+        .yields()
+    ).toBe(false);
+  });
+
+  test("Fake Set via Object.create yields false", () => {
+    const Set = {
+      constructor: {
+        name: "Set"
+      }
+    };
+
+    const fake3 = Object.create(Set);
+
+    expect(
+      typeCheck(Set)
+        .isSet()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(fake3)
+        .isSet()
+        .yields()
+    ).toBe(false);
+  });
+});
+
+describe("isWeakSet", () => {
+  test("WeakSet is a WeakSet", () => {
+    const x = new WeakSet();
+    expect(
+      typeCheck(x)
+        .isWeakSet()
+        .yields()
+    ).toBe(true);
+  });
+
+  test("Fake WeakSet function yields false", () => {
+    function WeakSet() {
+      this.constructor = {
+        name: "WeakSet"
+      };
+      return this;
+    }
+
+    expect(
+      typeCheck(new WeakSet())
+        .isWeakSet()
+        .yields()
+    ).toBe(false);
+  });
+
+  test("Fake WeakSet via Object.create yields false", () => {
+    const WeakSet = {
+      constructor: {
+        name: "WeakSet"
+      }
+    };
+
+    const fake3 = Object.create(WeakSet);
+
+    expect(
+      typeCheck(WeakSet)
+        .isWeakSet()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(fake3)
+        .isWeakSet()
+        .yields()
+    ).toBe(false);
+  });
+});
+
+describe("isMap", () => {
+  test("Map is a Map", () => {
+    const x = new Map();
+    expect(
+      typeCheck(x)
+        .isMap()
+        .yields()
+    ).toBe(true);
+  });
+
+  test("Fake Map function yields false", () => {
+    function Map() {
+      this.constructor = {
+        name: "Map"
+      };
+      return this;
+    }
+
+    expect(
+      typeCheck(new Map())
+        .isMap()
+        .yields()
+    ).toBe(false);
+  });
+
+  test("Fake Map via Object.create yields false", () => {
+    const Map = {
+      constructor: {
+        name: "Map"
+      }
+    };
+
+    const fake3 = Object.create(Map);
+
+    expect(
+      typeCheck(Map)
+        .isMap()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(fake3)
+        .isMap()
+        .yields()
+    ).toBe(false);
+  });
+});
+
+describe("isWeakMap", () => {
+  test("WeakMap is a WeakMap", () => {
+    const x = new WeakMap();
+    expect(
+      typeCheck(x)
+        .isWeakMap()
+        .yields()
+    ).toBe(true);
+  });
+
+  test("Fake WeakMap function yields false", () => {
+    function WeakMap() {
+      this.constructor = {
+        name: "WeakMap"
+      };
+      return this;
+    }
+
+    expect(
+      typeCheck(new WeakMap())
+        .isWeakMap()
+        .yields()
+    ).toBe(false);
+  });
+
+  test("Fake WeakMap via Object.create yields false", () => {
+    const WeakMap = {
+      constructor: {
+        name: "WeakMap"
+      }
+    };
+
+    const fake3 = Object.create(WeakMap);
+
+    expect(
+      typeCheck(WeakMap)
+        .isWeakMap()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(fake3)
+        .isWeakMap()
+        .yields()
+    ).toBe(false);
   });
 });

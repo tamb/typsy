@@ -22,75 +22,109 @@ export function typeCheck(item) {
     isOr: false,
     isAnd: false,
     isUnless: false,
-    and: () => {
+    // add(checkName, checkFunction){
+    //   return mod[checkName] = () => {
+    //     const bool = checkFunction(item);
+    //     return handleBool(mod, bool);
+    //   };
+    // },
+    and() {
       mod.isAnd = true;
       mod.isUnless = false;
       mod.isOr = false;
       return mod;
     },
-    or: () => {
+    or() {
       mod.isAnd = false;
       mod.isUnless = false;
       mod.isOr = true;
       return mod;
     },
-    unless: () => {
+    unless() {
       mod.isAnd = false;
       mod.isUnless = true;
       mod.isOr = false;
       return mod;
     },
-    isInteger: () => {
+    isInteger() {
       const bool = typeof item === "number" && item % 1 === 0;
       return handleBool(mod, bool);
     },
-    isString: () => {
+    isString() {
       const bool = typeof item === "string";
       return handleBool(mod, bool);
     },
-    isEmptyString: () => {
+    isEmptyString() {
       const bool = typeof item === "string" && item.length === 0;
       return handleBool(mod, bool);
     },
-    isAllWhiteSpace: () => {
+    isAllWhiteSpace() {
       const bool = typeof item === "string" && !/\S/.test(item);
       return handleBool(mod, bool);
     },
-    isBoolean: () => {
+    isBoolean() {
       const bool = typeof item === "boolean";
       return handleBool(mod, bool);
     },
-    isFloat: () => {
+    isFloat() {
       const bool = typeof item === "number" && item % 1 !== 0;
       return handleBool(mod, bool);
     },
-    isObject: () => {
+    isObject() {
       const bool =
         typeof item === "object" && item !== null && !Array.isArray(item);
       return handleBool(mod, bool);
     },
-    isNull: () => {
+    isNull() {
       const bool = typeof item === "object" && item === null;
       return handleBool(mod, bool);
     },
-    isUndefined: () => {
+    isUndefined() {
       const bool = typeof item === "undefined" && item === undefined;
       return handleBool(mod, bool);
     },
-    isArray: () => {
+    isArray() {
       const bool = Array.isArray(item);
       return handleBool(mod, bool);
     },
-    isEmptyArray: () => {
+    isEmptyArray() {
       const bool = Array.isArray(item) && item.length === 0;
       return handleBool(mod, bool);
     },
-    isFunction: () => {
+    isFunction() {
       const bool = typeof item === "function";
       return handleBool(mod, bool);
     },
-    isDate: () => {
+    isDate() {
       const bool = item instanceof Date;
+      return handleBool(mod, bool);
+    },
+    isSet() {
+      const bool =
+        typeof item === "object" &&
+        item.constructor.name === "Set" &&
+        item instanceof Set;
+      return handleBool(mod, bool);
+    },
+    isWeakSet() {
+      const bool =
+        typeof item === "object" &&
+        item.constructor.name === "WeakSet" &&
+        item instanceof WeakSet;
+      return handleBool(mod, bool);
+    },
+    isMap() {
+      const bool =
+        typeof item === "object" &&
+        item.constructor.name === "Map" &&
+        item instanceof Map;
+      return handleBool(mod, bool);
+    },
+    isWeakMap() {
+      const bool =
+        typeof item === "object" &&
+        item.constructor.name === "WeakMap" &&
+        item instanceof WeakMap;
       return handleBool(mod, bool);
     }
   };
