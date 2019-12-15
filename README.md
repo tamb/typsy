@@ -47,6 +47,10 @@ isArray();
 isEmptyArray();
 isFunction();
 isDate();
+isSet();
+isWeakSet();
+isMap();
+isWeakMap();
 ```
 
 ## methods
