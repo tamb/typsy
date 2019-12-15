@@ -56,3 +56,20 @@ and();
 or();
 unless();
 ```
+
+## custom checks
+Use the `check` function to insert a custom check function.
+
+```js
+  function isNegative(value){
+    return value < 0;
+  }
+  
+  typeCheck(12).check(isNegative).yields(); // false
+  typeCheck(-12).check(isNegative).yields(); // true
+  
+
+  typeCheck(12).isInteger().and().check(isNegative).yields(); // false
+  typeCheck(-12).isInteger().and().check(isNegative).yields(); // true
+  typeCheck(12).isInteger().or().check(isNegative).yields(); // true
+```

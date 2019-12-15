@@ -431,17 +431,6 @@ describe("typeCheck basics", () => {
   test("item field returns variable value", () => {
     expect(typeCheck(15).item).toBe(15);
   });
-
-  // test("can add custom check", ()=>{
-  //   const _typeCheck = typeCheck().add("isNegative", toCheck => toCheck < 0);
-  //   console.log(_typeCheck());
-  //   expect(_typeCheck(12).isNegative().yields()).toBe(false);
-  //   expect(_typeCheck(-12).isNegative().yields()).toBe(true);
-  // });
-
-  // test("can chain custom check", ()=>{
-
-  // });
 });
 
 describe("isSet", () => {
@@ -629,5 +618,48 @@ describe("isWeakMap", () => {
         .isWeakMap()
         .yields()
     ).toBe(false);
+  });
+});
+
+describe("custom checks", () => {
+  function isNegative(value) {
+    return value < 0;
+  }
+
+  test("custom check works", () => {
+    expect(
+      typeCheck(12)
+        .check(isNegative)
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(-12)
+        .check(isNegative)
+        .yields()
+    ).toBe(true);
+  });
+
+  test("can chain custom check", () => {
+    expect(
+      typeCheck(12)
+        .isInteger()
+        .and()
+        .check(isNegative)
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(-12)
+        .isInteger()
+        .and()
+        .check(isNegative)
+        .yields()
+    ).toBe(true);
+    expect(
+      typeCheck(12)
+        .isInteger()
+        .or()
+        .check(isNegative)
+        .yields()
+    ).toBe(true);
   });
 });

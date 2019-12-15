@@ -22,12 +22,10 @@ export function typeCheck(item) {
     isOr: false,
     isAnd: false,
     isUnless: false,
-    // add(checkName, checkFunction){
-    //   return mod[checkName] = () => {
-    //     const bool = checkFunction(item);
-    //     return handleBool(mod, bool);
-    //   };
-    // },
+    check(checkFunction) {
+      const bool = checkFunction(item);
+      return handleBool(mod, bool);
+    },
     and() {
       mod.isAnd = true;
       mod.isUnless = false;
