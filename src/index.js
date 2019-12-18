@@ -124,6 +124,46 @@ export function typeCheck(item) {
         item.constructor.name === "WeakMap" &&
         item instanceof WeakMap;
       return handleBool(mod, bool);
+    },
+    isComment() {
+      const bool = item === Node.COMMENT_NODE;
+      return handleBool(mod, bool);
+    },
+    isElement() {
+      const bool = item === Node.ELEMENT_NODE;
+      return handleBool(mod, bool);
+    },
+    isTextNode() {
+      const bool = item === Node.TEXT_NODE;
+      return handleBool(mod, bool);
+    },
+    isDocFragment() {
+      const bool = item === Node.DOCUMENT_FRAGMENT_NODE;
+      return handleBool(mod, bool);
+    },
+    isDocument() {
+      const bool = item === Node.DOCUMENT_NODE;
+      return handleBool(mod, bool);
+    },
+    isDocType() {
+      const bool = item === Node.DOCUMENT_TYPE_NODE;
+      return handleBool(mod, bool);
+    },
+    isElementType(type) {
+      const bool = item.nodeName === type.trim().toUpperCase();
+      return handleBool(mod, bool);
+    },
+    isNodeList() {
+      const bool = NodeList.prototype.isPrototypeOf(item);
+      return handleBool(mod, bool);
+    },
+    isElementCollection() {
+      const bool = HTMLCollection.prototype.isPrototypeOf(item);
+      return handleBool(mod, bool);
+    },
+    isElementCollectionOf(type) {
+      const bool = item.every(el => el.nodeName === type.trim().toUpperCase());
+      return handleBool(mod, bool);
     }
   };
 

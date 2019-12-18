@@ -663,3 +663,5 @@ describe("custom checks", () => {
     ).toBe(true);
   });
 });
+
+describe("DOM checks", () => {});
