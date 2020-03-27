@@ -77,3 +77,8 @@ Use the `check` function to insert a custom check function.
   typeCheck(-12).isInteger().and().check(isNegative).yields(); // true
   typeCheck(12).isInteger().or().check(isNegative).yields(); // true
 ```
+
+## neat recipes
+```js
+myFunction(typeCheck(myVariable).isInteger().or().isString().yields()? myVariable : 1);
+```
