@@ -2,16 +2,20 @@ export function typeCheck(item) {
   function handleBool(mod, bool) {
     mod.truths.push(bool);
     if (mod.isOr) {
-      mod.isTrue = mod.truths.some(item => item === true);
+      mod.returnsTrue = mod.truths.some((item) => item === true);
     } else if (mod.isAnd) {
-      mod.isTrue = mod.truths.every(item => item === true);
+      mod.returnsTrue = mod.truths.every((item) => item === true);
     } else if (mod.isUnless) {
-      mod.isTrue = !bool;
+      mod.returnsTrue = !bool;
     } else {
-      mod.isTrue = bool;
+      mod.returnsTrue = bool;
     }
 
     return mod;
+  }
+
+  function process(_mod, _bool, _not) {
+    return handleBool(_mod, _not === false ? !_bool : _bool);
   }
 
   const mod = {
@@ -22,6 +26,8 @@ export function typeCheck(item) {
       if (!mod.isTrue && falseHandler) falseHandler(item);
       return mod.isTrue;
     },
+    returnsTrue: false,
+    yields: () => mod.returnsTrue,
     truths: [],
     isOr: false,
     isAnd: false,
@@ -48,87 +54,95 @@ export function typeCheck(item) {
       mod.isOr = false;
       return mod;
     },
-    isInteger() {
+    isTrue(not) {
+      const bool = item === true;
+      return process(mod, bool, not);
+    },
+    isFalse(not) {
+      const bool = item === false;
+      return process(mod, bool, not);
+    },
+    isInteger(not) {
       const bool = typeof item === "number" && item % 1 === 0;
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isString() {
+    isString(not) {
       const bool = typeof item === "string";
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isEmptyString() {
+    isEmptyString(not) {
       const bool = typeof item === "string" && item.length === 0;
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isAllWhiteSpace() {
+    isAllWhiteSpace(not) {
       const bool = typeof item === "string" && !/\S/.test(item);
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isBoolean() {
+    isBoolean(not) {
       const bool = typeof item === "boolean";
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isFloat() {
+    isFloat(not) {
       const bool = typeof item === "number" && item % 1 !== 0;
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isObject() {
+    isObject(not) {
       const bool =
         typeof item === "object" && item !== null && !Array.isArray(item);
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isNull() {
+    isNull(not) {
       const bool = typeof item === "object" && item === null;
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isUndefined() {
+    isUndefined(not) {
       const bool = typeof item === "undefined" && item === undefined;
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isArray() {
+    isArray(not) {
       const bool = Array.isArray(item);
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isEmptyArray() {
+    isEmptyArray(not) {
       const bool = Array.isArray(item) && item.length === 0;
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isFunction() {
+    isFunction(not) {
       const bool = typeof item === "function";
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isDate() {
+    isDate(not) {
       const bool = item instanceof Date;
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isSet() {
+    isSet(not) {
       const bool =
         typeof item === "object" &&
         item.constructor.name === "Set" &&
         item instanceof Set;
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isWeakSet() {
+    isWeakSet(not) {
       const bool =
         typeof item === "object" &&
         item.constructor.name === "WeakSet" &&
         item instanceof WeakSet;
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isMap() {
+    isMap(not) {
       const bool =
         typeof item === "object" &&
         item.constructor.name === "Map" &&
         item instanceof Map;
-      return handleBool(mod, bool);
+      return process(mod, bool, not);
     },
-    isWeakMap() {
+    isWeakMap(not) {
       const bool =
         typeof item === "object" &&
         item.constructor.name === "WeakMap" &&
         item instanceof WeakMap;
-      return handleBool(mod, bool);
-    }
+      return process(mod, bool, not);
+    },
   };
 
   return mod;
