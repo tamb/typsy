@@ -17,7 +17,11 @@ export function typeCheck(item) {
   const mod = {
     item,
     isTrue: false,
-    yields: () => mod.isTrue,
+    yields: (trueHandler, falseHandler) => {
+      if (mod.isTrue && trueHandler) trueHandler(item);
+      if (!mod.isTrue && falseHandler) falseHandler(item);
+      return mod.isTrue;
+    },
     truths: [],
     isOr: false,
     isAnd: false,
