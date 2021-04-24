@@ -489,7 +489,7 @@ describe("isSet", () => {
   test("Fake Set function yields false", () => {
     function Set() {
       this.constructor = {
-        name: "Set",
+        name: "Set"
       };
       return this;
     }
@@ -504,8 +504,8 @@ describe("isSet", () => {
   test("Fake Set via Object.create yields false", () => {
     const Set = {
       constructor: {
-        name: "Set",
-      },
+        name: "Set"
+      }
     };
 
     const fake3 = Object.create(Set);
@@ -536,7 +536,7 @@ describe("isWeakSet", () => {
   test("Fake WeakSet function yields false", () => {
     function WeakSet() {
       this.constructor = {
-        name: "WeakSet",
+        name: "WeakSet"
       };
       return this;
     }
@@ -551,8 +551,8 @@ describe("isWeakSet", () => {
   test("Fake WeakSet via Object.create yields false", () => {
     const WeakSet = {
       constructor: {
-        name: "WeakSet",
-      },
+        name: "WeakSet"
+      }
     };
 
     const fake3 = Object.create(WeakSet);
@@ -583,7 +583,7 @@ describe("isMap", () => {
   test("Fake Map function yields false", () => {
     function Map() {
       this.constructor = {
-        name: "Map",
+        name: "Map"
       };
       return this;
     }
@@ -598,8 +598,8 @@ describe("isMap", () => {
   test("Fake Map via Object.create yields false", () => {
     const Map = {
       constructor: {
-        name: "Map",
-      },
+        name: "Map"
+      }
     };
 
     const fake3 = Object.create(Map);
@@ -630,7 +630,7 @@ describe("isWeakMap", () => {
   test("Fake WeakMap function yields false", () => {
     function WeakMap() {
       this.constructor = {
-        name: "WeakMap",
+        name: "WeakMap"
       };
       return this;
     }
@@ -645,8 +645,8 @@ describe("isWeakMap", () => {
   test("Fake WeakMap via Object.create yields false", () => {
     const WeakMap = {
       constructor: {
-        name: "WeakMap",
-      },
+        name: "WeakMap"
+      }
     };
 
     const fake3 = Object.create(WeakMap);
@@ -717,7 +717,17 @@ describe("yields callbacks", () => {
     expect(fn).toHaveBeenCalledTimes(1);
   });
 
-  test("false callback fires when yields returns false and true callback is not fired", () => {
+  test("false callback fires when yields returns false", () => {
+    const fn = jest.fn();
+    const fn2 = jest.fn();
+    typeCheck(21)
+      .isString()
+      .yields(fn, fn2);
+
+    expect(fn2).toHaveBeenCalledTimes(1);
+  });
+
+  test("true callback does NOT fire when yields returns false", () => {
     const fn = jest.fn();
     const fn2 = jest.fn();
     typeCheck(21)
@@ -725,7 +735,16 @@ describe("yields callbacks", () => {
       .yields(fn, fn2);
 
     expect(fn).toHaveBeenCalledTimes(0);
-    expect(fn2).toHaveBeenCalledTimes(1);
+  });
+
+  test("false callback does NOT fire when yields returns true", () => {
+    const fn = jest.fn();
+    const fn2 = jest.fn();
+    typeCheck(21)
+      .isInteger()
+      .yields(fn, fn2);
+
+    expect(fn2).toHaveBeenCalledTimes(0);
   });
 
   test("true callback uses typecheck value", () => {
