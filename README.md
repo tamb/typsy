@@ -1,6 +1,6 @@
 # typsy
 
-Simple, chainable type-checking for JavaScript
+Simple, chainable runtime type-checking for JavaScript
 
 ## install
 
