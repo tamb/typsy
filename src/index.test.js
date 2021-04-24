@@ -663,3 +663,57 @@ describe("custom checks", () => {
     ).toBe(true);
   });
 });
+
+describe("yields callbacks", () => {
+  test("true callback fires when yields returns true", () => {
+    const fn = jest.fn();
+    typeCheck(21)
+      .isInteger()
+      .yields(fn);
+
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+
+  test("false callback fires when yields returns false and true callback is not fired", () => {
+    const fn = jest.fn();
+    const fn2 = jest.fn();
+    typeCheck(21)
+      .isString()
+      .yields(fn, fn2);
+
+    expect(fn).toHaveBeenCalledTimes(0);
+    expect(fn2).toHaveBeenCalledTimes(1);
+  });
+
+  test("true callback uses typecheck value", () => {
+    let shouldBeTheWordStep = null;
+    function makeStep(st) {
+      return (shouldBeTheWordStep = `${st}ep`);
+    }
+    function makeStop(st) {
+      return (shouldBeTheWordStep = `${st}op`);
+    }
+
+    typeCheck("st")
+      .isString()
+      .yields(makeStep, makeStop);
+
+    expect(shouldBeTheWordStep).toMatch("step");
+  });
+
+  test("false callback uses typecheck value", () => {
+    let shouldBeTheWordStep = null;
+    function makeStep(st) {
+      return (shouldBeTheWordStep = `${st}ep`);
+    }
+    function makeStop(st) {
+      return (shouldBeTheWordStep = `${st}op`);
+    }
+
+    typeCheck("st")
+      .isInteger()
+      .yields(makeStep, makeStop);
+
+    expect(shouldBeTheWordStep).toMatch("stop");
+  });
+});
