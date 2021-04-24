@@ -34,6 +34,8 @@ typeCheck(x).isString().or().isInteger().yields(); // true
 ## checks
 
 ```js
+isTrue();
+isFalse();
 isInteger();
 isString();
 isEmptyString();
@@ -59,6 +61,13 @@ isWeakMap();
 and();
 or();
 unless();
+```
+
+## `not` modifier
+
+pass any built-in check `false`
+```js
+typeCheck(21).isArray(false).yields(); // returns true;
 ```
 
 ## custom checks

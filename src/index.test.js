@@ -1,6 +1,49 @@
 import { typeCheck } from "./index";
 
 describe("typeCheck basics", () => {
+  test("type check for strict true returns true when passed true", () => {
+    expect(
+      typeCheck(true)
+        .isTrue()
+        .yields()
+    ).toBe(true);
+  });
+  test("type check for strict true when truthy returns false", () => {
+    expect(
+      typeCheck(1)
+        .isTrue()
+        .yields()
+    ).toBe(false);
+  });
+  test("type check for strict false returns true when passed false", () => {
+    expect(
+      typeCheck(false)
+        .isFalse()
+        .yields()
+    ).toBe(true);
+  });
+  test("type check for strict false returns false when passed falsey", () => {
+    expect(
+      typeCheck(null)
+        .isFalse()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(undefined)
+        .isFalse()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck(0)
+        .isFalse()
+        .yields()
+    ).toBe(false);
+    expect(
+      typeCheck("")
+        .isFalse()
+        .yields()
+    ).toBe(false);
+  });
   test("Integer test to return true for Negative and Positive Integer.  String is not an Int", () => {
     expect(
       typeCheck(12)
@@ -446,7 +489,7 @@ describe("isSet", () => {
   test("Fake Set function yields false", () => {
     function Set() {
       this.constructor = {
-        name: "Set"
+        name: "Set",
       };
       return this;
     }
@@ -461,8 +504,8 @@ describe("isSet", () => {
   test("Fake Set via Object.create yields false", () => {
     const Set = {
       constructor: {
-        name: "Set"
-      }
+        name: "Set",
+      },
     };
 
     const fake3 = Object.create(Set);
@@ -493,7 +536,7 @@ describe("isWeakSet", () => {
   test("Fake WeakSet function yields false", () => {
     function WeakSet() {
       this.constructor = {
-        name: "WeakSet"
+        name: "WeakSet",
       };
       return this;
     }
@@ -508,8 +551,8 @@ describe("isWeakSet", () => {
   test("Fake WeakSet via Object.create yields false", () => {
     const WeakSet = {
       constructor: {
-        name: "WeakSet"
-      }
+        name: "WeakSet",
+      },
     };
 
     const fake3 = Object.create(WeakSet);
@@ -540,7 +583,7 @@ describe("isMap", () => {
   test("Fake Map function yields false", () => {
     function Map() {
       this.constructor = {
-        name: "Map"
+        name: "Map",
       };
       return this;
     }
@@ -555,8 +598,8 @@ describe("isMap", () => {
   test("Fake Map via Object.create yields false", () => {
     const Map = {
       constructor: {
-        name: "Map"
-      }
+        name: "Map",
+      },
     };
 
     const fake3 = Object.create(Map);
@@ -587,7 +630,7 @@ describe("isWeakMap", () => {
   test("Fake WeakMap function yields false", () => {
     function WeakMap() {
       this.constructor = {
-        name: "WeakMap"
+        name: "WeakMap",
       };
       return this;
     }
@@ -602,8 +645,8 @@ describe("isWeakMap", () => {
   test("Fake WeakMap via Object.create yields false", () => {
     const WeakMap = {
       constructor: {
-        name: "WeakMap"
-      }
+        name: "WeakMap",
+      },
     };
 
     const fake3 = Object.create(WeakMap);
@@ -715,5 +758,28 @@ describe("yields callbacks", () => {
       .yields(makeStep, makeStop);
 
     expect(shouldBeTheWordStep).toMatch("stop");
+  });
+});
+describe("not checks", () => {
+  test("NOT true returns false for true input", () => {
+    expect(
+      typeCheck(true)
+        .isTrue(false)
+        .yields()
+    ).toBe(false);
+  });
+  test("NOT integer returns false for integer", () => {
+    expect(
+      typeCheck(3)
+        .isInteger(false)
+        .yields()
+    ).toBe(false);
+  });
+  test("NOT integer returns true for non-integer input", () => {
+    expect(
+      typeCheck("hello")
+        .isInteger(false)
+        .yields()
+    ).toBe(true);
   });
 });
