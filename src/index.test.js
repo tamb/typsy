@@ -778,6 +778,43 @@ describe("yields callbacks", () => {
 
     expect(shouldBeTheWordStep).toMatch("stop");
   });
+
+  test("true callback fires when yields returns with not operator", () => {
+    const fn = jest.fn();
+    const fn2 = jest.fn();
+    typeCheck(21)
+      .isString(false)
+      .yields(fn, fn2);
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(fn2).toHaveBeenCalledTimes(0);
+  });
+
+  test("true callback fires when yields returns with not, or operators", () => {
+    const fn = jest.fn();
+    const fn2 = jest.fn();
+    typeCheck("Hello")
+      .isString(false)
+      .or()
+      .isString()
+      .yields(fn, fn2);
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(fn2).toHaveBeenCalledTimes(0);
+  });
+
+  test("true callback fires when yields returns with not, or operators", () => {
+    const fn = jest.fn();
+    const fn2 = jest.fn();
+    typeCheck("Hello")
+      .isString(false)
+      .or()
+      .isInteger(false)
+      .yields(fn, fn2);
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(fn2).toHaveBeenCalledTimes(0);
+  });
 });
 describe("not checks", () => {
   test("NOT true returns false for true input", () => {
