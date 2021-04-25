@@ -8,7 +8,8 @@ export default [
     output: {
       file: "dist/index.js",
       format: "umd",
-      name: "typsy"
+      name: "typsy",
+      sourceMap: true
     },
     plugins: [
       terser({
@@ -29,7 +30,8 @@ export default [
     output: {
       file: "dist/index.development.js",
       format: "umd",
-      name: "typsy"
+      name: "typsy",
+      sourceMap: true
     }
   },
   {
@@ -37,7 +39,8 @@ export default [
     output: {
       file: "dist/typsy.es5.js",
       format: "umd",
-      name: "typsy"
+      name: "typsy",
+      sourceMap: true
     },
     plugins: [
       babel({
@@ -56,7 +59,8 @@ export default [
     output: {
       file: "dist/typsy.es5.development.js",
       format: "umd",
-      name: "typsy"
+      name: "typsy",
+      sourceMap: true
     },
     plugins: [
       babel({

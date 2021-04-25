@@ -12,7 +12,11 @@ npm install --save typsy
 
 ```js
 // myfile.js
+// ES module
 import { typeCheck } from "typsy";
+
+// Node.js
+const typeCheck = require("typsy").typeCheck;
 ```
 
 ## use

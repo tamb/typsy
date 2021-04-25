@@ -2,9 +2,9 @@ export function typeCheck(item) {
   function handleBool(mod, bool) {
     mod.truths.push(bool);
     if (mod.isOr) {
-      mod.returnsTrue = mod.truths.some((item) => item === true);
+      mod.returnsTrue = mod.truths.some(item => item === true);
     } else if (mod.isAnd) {
-      mod.returnsTrue = mod.truths.every((item) => item === true);
+      mod.returnsTrue = mod.truths.every(item => item === true);
     } else if (mod.isUnless) {
       mod.returnsTrue = !bool;
     } else {
@@ -20,14 +20,12 @@ export function typeCheck(item) {
 
   const mod = {
     item,
-    isTrue: false,
     yields: (trueHandler, falseHandler) => {
-      if (mod.isTrue && trueHandler) trueHandler(item);
-      if (!mod.isTrue && falseHandler) falseHandler(item);
-      return mod.isTrue;
+      if (mod.returnsTrue && trueHandler) trueHandler(item);
+      if (!mod.returnsTrue && falseHandler) falseHandler(item);
+      return mod.returnsTrue;
     },
     returnsTrue: false,
-    yields: () => mod.returnsTrue,
     truths: [],
     isOr: false,
     isAnd: false,
@@ -142,7 +140,7 @@ export function typeCheck(item) {
         item.constructor.name === "WeakMap" &&
         item instanceof WeakMap;
       return process(mod, bool, not);
-    },
+    }
   };
 
   return mod;
