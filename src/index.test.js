@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { typeCheck } from "./index";
 
 describe("typeCheck basics", () => {
@@ -305,6 +309,32 @@ describe("typeCheck basics", () => {
     ).toBe(false);
   });
 
+  test("empty object is empty object", () => {
+    const x = {};
+    const y = { hey: 0 };
+    expect(
+      typeCheck(x)
+        .isEmptyObject()
+        .yields()
+    ).toBe(true);
+    expect(
+      typeCheck(x)
+        .isEmptyObject(false)
+        .yields()
+    ).toBe(false);
+
+    expect(
+      typeCheck(y)
+        .isEmptyObject(false)
+        .yields()
+    ).toBe(true);
+    expect(
+      typeCheck(y)
+        .isEmptyObject()
+        .yields()
+    ).toBe(false);
+  });
+
   test("function is a function", () => {
     let x;
     expect(
@@ -341,6 +371,60 @@ describe("typeCheck basics", () => {
     expect(
       typeCheck(dateString)
         .isDate()
+        .yields()
+    ).toBe(false);
+  });
+
+  test("Symbol is Symbol", () => {
+    const x = Symbol();
+    expect(
+      typeCheck(x)
+        .isSymbol()
+        .yields()
+    ).toBe(true);
+  });
+
+  test("BigInt is BigInt", () => {
+    const x = BigInt(9007199254740991);
+    expect(
+      typeCheck(x)
+        .isBigInt()
+        .yields()
+    ).toBe(true);
+  });
+
+  test("isNan is Nan", () => {
+    const x = "yoyoyo";
+    expect(
+      typeCheck(x)
+        .isNaN()
+        .yields()
+    ).toBe(true);
+  });
+
+  test("isHTML is HTML", () => {
+    document.body.insertAdjacentHTML("afterbegin", "<div></div>");
+    const x = document.querySelector("div");
+    const y = 1;
+    expect(
+      typeCheck(x)
+        .isNaN()
+        .yields()
+    ).toBe(true);
+    expect(
+      typeCheck(x)
+        .isHTML()
+        .yields()
+    ).toBe(true);
+    expect(
+      typeCheck(y)
+        .isHTML(false)
+        .yields()
+    ).toBe(true);
+
+    expect(
+      typeCheck(y)
+        .isHTML()
         .yields()
     ).toBe(false);
   });

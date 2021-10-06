@@ -1,6 +1,6 @@
 {
   "name": "typsy",
-  "version": "0.0.0-alpha.5",
+  "version": "1.0.0-beta.1",
   "description": "",
   "keywords": [],
   "private": false,
@@ -13,6 +13,7 @@
   "unpkg": "dist/index",
   "scripts": {
     "test": "jest",
+    "test:dev": "jest --watch",
     "build": "npm test && rollup -c rollup.config.js"
   },
   "files": [

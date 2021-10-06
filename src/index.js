@@ -89,6 +89,14 @@ export function typeCheck(item) {
         typeof item === "object" && item !== null && !Array.isArray(item);
       return process(mod, bool, not);
     },
+    isEmptyObject(not) {
+      const bool =
+        typeof item === "object" &&
+        item !== null &&
+        !Array.isArray(item) &&
+        Object.keys(item).length === 0;
+      return process(mod, bool, not);
+    },
     isNull(not) {
       const bool = typeof item === "object" && item === null;
       return process(mod, bool, not);
@@ -139,6 +147,22 @@ export function typeCheck(item) {
         typeof item === "object" &&
         item.constructor.name === "WeakMap" &&
         item instanceof WeakMap;
+      return process(mod, bool, not);
+    },
+    isSymbol(not) {
+      const bool = typeof item === "symbol";
+      return process(mod, bool, not);
+    },
+    isNaN(not) {
+      const bool = isNaN(item);
+      return process(mod, bool, not);
+    },
+    isBigInt(not) {
+      const bool = typeof item === "bigint";
+      return process(mod, bool, not);
+    },
+    isHTML(not) {
+      const bool = item.tagName !== undefined && item instanceof Element;
       return process(mod, bool, not);
     }
   };
