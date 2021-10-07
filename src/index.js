@@ -164,6 +164,28 @@ export function typeCheck(item) {
     isHTML(not) {
       const bool = item.tagName !== undefined && item instanceof Element;
       return process(mod, bool, not);
+    },
+    isCollection(not) {
+      const bool =
+        typeCheck(item)
+          .isObject()
+          .yields() ||
+        typeCheck(item)
+          .isMap()
+          .yields() ||
+        typeCheck(item)
+          .isWeakMap()
+          .yields() ||
+        typeCheck(item)
+          .isSet()
+          .yields() ||
+        typeCheck(item)
+          .isArray()
+          .yields() ||
+        typeCheck(item)
+          .isWeakSet()
+          .yields();
+      return process(mod, bool, not);
     }
   };
 
