@@ -429,6 +429,22 @@ describe("typeCheck basics", () => {
     ).toBe(false);
   });
 
+  test("Number is not collection", () => {
+    expect(
+      typeCheck(12)
+        .isCollection()
+        .yields()
+    ).toBe(false);
+  });
+
+  test("String is not collection", () => {
+    expect(
+      typeCheck("Hello")
+        .isCollection()
+        .yields()
+    ).toBe(false);
+  });
+
   test("unless works", () => {
     const name = "foobar";
     const number = 234;

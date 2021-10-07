@@ -57,6 +57,14 @@ isSet();
 isWeakSet();
 isMap();
 isWeakMap();
+isFloat();
+isObject();
+isEmptyObject();
+isNaN();
+isCollection();
+isBigInt();
+isSymbol();
+isHTML();
 ```
 
 ## methods
