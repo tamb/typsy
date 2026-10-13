@@ -1,130 +1,119 @@
 # typsy
 
-Simple, chainable runtime type-checking for JavaScript
+Small, chainable runtime type checks for JavaScript and TypeScript. Typsy has no runtime dependencies and works in Node.js and modern browsers.
 
-## install
+## Install
 
-```js
-npm install --save typsy
+```sh
+npm install typsy
 ```
 
-## import
+## Usage
 
 ```js
-// myfile.js
-// ES module
 import { typeCheck } from "typsy";
 
-// Node.js
-const typeCheck = require("typsy").typeCheck;
+typeCheck("hello").isString().yields(); // true
+typeCheck(21).isString().or().isInteger().yields(); // true
+typeCheck([]).isArray().and().isEmptyArray().yields(); // true
 ```
 
-## use
+CommonJS is supported too:
 
 ```js
-const x = "This is a string";
-
-typeCheck(x).isString().yields(); // true
-
-typeCheck(x).isInteger().yields(); // false
-
-typeCheck(x).isString().or().isInteger().yields(); // true
+const { typeCheck } = require("typsy");
 ```
 
-## the almighty `yields`
+For a browser script tag, use the `unpkg` or `jsdelivr` build:
 
-`yields()` returns whether the check is true or not. It must be called at the end to return `true` or `false`
+```html
+<script src="https://unpkg.com/typsy"></script>
+<script>
+  typsy.typeCheck(document.body).isHTML().yields();
+</script>
+```
 
-## checks
+The package includes type declarations, ESM and CommonJS entry points, source maps, and a browser-ready global build. Node.js 18 or newer is supported. Browser output targets ES2018.
+
+## Checks
+
+Every check returns the same chain and accepts an optional `false` argument to negate only that check.
+
+### Primitives
+
+- `isTrue()`, `isFalse()`
+- `isNumber()`, `isFinite()`, `isInteger()`, `isFloat()`, `isNaN()`
+- `isString()`, `isEmptyString()`, `isAllWhiteSpace()`
+- `isBoolean()`, `isSymbol()`, `isBigInt()`
+- `isNull()`, `isUndefined()`
+
+`isNumber()` excludes `NaN`. `isFinite()` and `isFloat()` also exclude positive and negative infinity. `isNaN()` is strict and does not coerce strings.
+
+### Objects and collections
+
+- `isObject()`, `isPlainObject()`, `isEmptyObject()`
+- `isArray()`, `isEmptyArray()`, `isFunction()`
+- `isDate()`, `isRegExp()`, `isError()`, `isPromise()`
+- `isSet()`, `isWeakSet()`, `isMap()`, `isWeakMap()`
+- `isCollection()` for plain objects, arrays, maps, weak maps, sets, and weak sets
+- `isHTML()` for browser `Element` instances
+
+Browser-only checks safely return `false` when their browser globals are unavailable.
+
+## Chaining
+
+Use `and()` or `or()` between checks:
 
 ```js
-isTrue();
-isFalse();
-isInteger();
-isString();
-isEmptyString();
-isAllWhiteSpace();
-isBoolean();
-isFloat();
-isObject();
-isNull();
-isUndefined();
-isArray();
-isEmptyArray();
-isFunction();
-isDate();
-isSet();
-isWeakSet();
-isMap();
-isWeakMap();
-isFloat();
-isObject();
-isEmptyObject();
-isNaN();
-isCollection();
-isBigInt();
-isSymbol();
-isHTML();
+typeCheck(value).isString().or().isInteger().yields();
+typeCheck(value).isArray().and().isEmptyArray().yields();
 ```
 
-## methods
+`unless()` toggles negation for following checks and remains independent of `and()` and `or()`. Call it again to turn that negation off:
 
 ```js
-and();
-or();
-unless();
+typeCheck(value)
+  .unless()
+  .isString()
+  .and()
+  .isArray()
+  .unless()
+  .or()
+  .isInteger()
+  .yields();
 ```
 
-## `not` modifier
-
-pass any built-in check `false`
-```js
-typeCheck(21).isArray(false).yields(); // returns true;
-```
-
-## custom checks
-Use the `check` function to insert a custom check function.
+Passing `false` negates one built-in check:
 
 ```js
-  function isNegative(value){
-    return value < 0;
-  }
-  
-  typeCheck(12).check(isNegative).yields(); // false
-  typeCheck(-12).check(isNegative).yields(); // true
-  
-
-  typeCheck(12).isInteger().and().check(isNegative).yields(); // false
-  typeCheck(-12).isInteger().and().check(isNegative).yields(); // true
-  typeCheck(12).isInteger().or().check(isNegative).yields(); // true
+typeCheck(21).isArray(false).yields(); // true
 ```
-## yields callbacks
 
-`yields` accepts a truth-handler and false-handler function respectively
-Both callbacks use the typeChecked value as its argument.
-This is especially useful for logging.
+## Custom checks
+
+`check()` accepts a predicate and normalizes its result to a boolean:
+
 ```js
-function myTrueCallback(){};
+const isNegative = (value) => value < 0;
 
-function myFalseCallback(){};
-
-typeCheck(21).isInteger().yields(myTrueCallback, myFalseCallback); // returns true & myTrueCallback is fired
-typeCheck("toot").isInteger().yields(myTrueCallback, myFalseCallback); // returns false & myFalseCallback is fired
+typeCheck(-12).isInteger().and().check(isNegative).yields(); // true
 ```
 
-with the `yields` callback you can even shorten your code:
+## Result callbacks
+
+`yields()` returns the final boolean. It can also call matching success and failure handlers with the original value:
+
 ```js
-// instead of 
-if(typeCheck(21).isInteger().yields()){
-  handleTrue(21);
-} else {
-  handleFalse(21)
-}
-// you can use this!
-typeCheck(21).isInteger().yields(handleTrue, handleFalse);
+typeCheck(value).isInteger().yields(handleInteger, handleOther);
 ```
 
-## neat recipes
-```js
-myFunction(typeCheck(myVariable).isInteger().or().isString().yields()? myVariable : 1);
+## Development
+
+```sh
+npm test
+npm run test:coverage
+npm run check
+npm run package:check
 ```
+
+`npm run package:check` builds every distribution format and validates the packed npm artifact and its type declarations.

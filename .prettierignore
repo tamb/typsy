@@ -1,6 +1,4 @@
 /node_modules
 /dist
-**node_modules
-**dist
-**coverage
-README.md
+/coverage
+package-lock.json
