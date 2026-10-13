@@ -23,7 +23,7 @@ jobs:
       - run: npm run test:coverage
       - run: npm run package:check
       - run: mkdir package-artifact && npm pack --pack-destination package-artifact
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: npm-package
           path: package-artifact/*.tgz
