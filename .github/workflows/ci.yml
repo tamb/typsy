@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run test:coverage
+      - run: npm run package:check
+      - run: mkdir package-artifact && npm pack --pack-destination package-artifact
+      - uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          path: package-artifact/*.tgz
+          if-no-files-found: error
+
+  node-compatibility:
+    needs: quality
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20, 22, 24]
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+          path: package-artifact
+      - name: Test packed ESM and CommonJS entry points
+        shell: bash
+        run: |
+          mkdir consumer
+          cd consumer
+          npm init --yes
+          npm install ../package-artifact/*.tgz
+          node --input-type=module --eval \
+            "import { typeCheck } from 'typsy'; if (!typeCheck(1).isInteger().yields()) process.exit(1)"
+          node --eval \
+            "const { typeCheck } = require('typsy'); if (!typeCheck('ok').isString().yields()) process.exit(1)"
