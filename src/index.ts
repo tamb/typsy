@@ -144,13 +144,13 @@ export function typeCheck<T>(item: T): TypeChecker<T> {
   };
 
   function handleBool(bool: unknown): TypeChecker<T> {
-    const result = state.isUnless ? !Boolean(bool) : Boolean(bool);
+    const result = state.isUnless ? !bool : Boolean(bool);
     state.truths.push(result);
 
     if (state.isOr) {
-      state.returnsTrue = state.truths.some(Boolean);
+      state.returnsTrue = state.truths.some((truth) => truth);
     } else if (state.isAnd) {
-      state.returnsTrue = state.truths.every(Boolean);
+      state.returnsTrue = state.truths.every((truth) => truth);
     } else {
       state.returnsTrue = result;
     }
